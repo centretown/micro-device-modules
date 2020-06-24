@@ -1,4 +1,4 @@
-import { Pin } from './pin'
+import { Pin } from './pin';
 
 export interface Device {
   label: string;
