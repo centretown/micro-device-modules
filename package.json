@@ -1,7 +1,7 @@
 {
   "name": "micro-device-modules",
   "version": "1.0.1",
-  "description": "A nice greeter",
+  "description": "simple device manager library",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "directories": {
@@ -24,9 +24,9 @@
     "url": "git+https://github.com/centretown/micro-device-modules.git"
   },
   "keywords": [
-    "Arduino",
-    "ESP32",
-    "Micro Controllers"
+    "lists",
+    "storeage",
+    "arrays"
   ],
   "author": "Dave Marsh",
   "license": "ISC",
