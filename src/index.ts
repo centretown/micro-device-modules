@@ -1,4 +1,4 @@
-export { Pin } from './pin';
-export { Device } from './device';
+export { Pin, PinSelectable, IPinSelectable } from './pin';
+export { Device, DeviceStoreable, IDeviceStorable } from './device';
 export { SelectableList } from './selectable-list';
-export { StoreableList } from './storeable-list';
+export { IStoreableList } from './storeable-list';
