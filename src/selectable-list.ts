@@ -9,15 +9,35 @@ export interface ISelectableList<T> {
     isSelected: (key: string) => boolean;
     removeSelected: () => void;
     getSelected: () => T[];
+    selected: () => number;
+    size: () => number;
+    nullItem: (item: T) => T;
 }
 
 export abstract class SelectableList<T> implements ISelectableList<T> {
-    public list: T[];
-    public selected: Set<string>;
+    private _list: T[];
+    private _selected: Set<string>;
+    private _nullItem: T;
 
     constructor() {
-        this.list = [];
-        this.selected = new Set<string>();
+        this._list = [];
+        this._selected = new Set<string>();
+        this._nullItem = {} as T;
+    }
+
+    /**
+     * @returns is equal to empty type
+     * @param item 
+     */
+    nullItem(): T {
+        return this._nullItem;
+    }
+
+    /**
+     * @returns list length
+     */
+    size(): number {
+        return this._list.length;
     }
 
     /**
@@ -32,10 +52,12 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      * @param item
      */
     put(item: T): void {
-        const k = this.key(item);
-        // only remove if it's there
-        this.remove(k);
-        this.list = [...this.list, item];
+        if (item) {
+            const k = this.key(item);
+            // only remove if it's there
+            this.remove(k);
+            this._list = [...this._list, item];
+        }
     }
 
     /**
@@ -43,7 +65,9 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      * @param list of items to put
      */
     putList(list: T[]): void {
-        list.forEach((item) => this.put(item));
+        if (list) {
+            list.forEach((item) => this.put(item));
+        }
     }
 
     /**
@@ -52,23 +76,24 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      * @param k the key of the item
      */
     remove(key: string): void {
-        const list = this.list.filter((t) => this.key(t) !== key);
+        const list = this._list.filter((t) => this.key(t) !== key);
         if (this.isSelected(key)) {
             this.toggleSelect(key);
         }
-        this.list = list;
+        this._list = list;
     }
 
     /**
-     * sort the list by key
+     * @returns a copy if the internal list ordered by key
      */
     sort(): T[] {
-        this.list = this.list.sort((a: T, b: T) => {
+        const r = [...this._list];
+        r.sort((a: T, b: T) => {
             const ka = this.key(a);
             const kb = this.key(b);
             return ka < kb ? -1 : ka > kb ? 1 : 0;
         });
-        return this.list;
+        return r;
     }
 
     /**
@@ -76,9 +101,9 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      * @param k the key string
      * @returns the item or undefined
      */
-    get(key: string): T | undefined {
-        const item = this.list.find((t) => this.key(t) === key);
-        return item;
+    get(key: string): T {
+        const item = this._list.find((t) => this.key(t) === key);
+        return item ? item : this._nullItem;
     }
 
     /**
@@ -87,10 +112,10 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      * @returns true if now selected or false if not
      */
     toggleSelect(key: string): boolean {
-        if (this.selected.delete(key)) {
+        if (this._selected.delete(key)) {
             return false;
         }
-        this.selected.add(key);
+        this._selected.add(key);
         return true;
     }
 
@@ -99,10 +124,33 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      * and clears selected set
      */
     removeSelected(): void {
-        this.selected.forEach((item) => {
+        this._selected.forEach((item) => {
             this.remove(item);
         });
-        this.selected.clear();
+        this._selected.clear();
+    }
+
+    /**
+     * @returns the number of items selected
+     */
+    selected(): number {
+        return this._selected.size;
+    }
+
+    /**
+     * @returns list item at index
+     * @param index in the list
+     */
+    item(index: number): T {
+        if (index >= 0 && index < this._list.length) return this._list[index];
+        return this._nullItem;
+    }
+
+    /**
+     * @returns a copy of the internal list
+     */
+    getAll(): T[] {
+        return [...this._list];
     }
 
     /**
@@ -110,7 +158,7 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      */
     getSelected(): T[] {
         let selected: T[] = [];
-        this.selected.forEach((item) => {
+        this._selected.forEach((item) => {
             const found: T | undefined = this.get(item);
             if (found) {
                 selected = [...selected, found];
@@ -123,6 +171,6 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      * @returns true if key selected
      */
     isSelected(key: string): boolean {
-        return this.selected.has(key);
+        return this._selected.has(key);
     }
 }

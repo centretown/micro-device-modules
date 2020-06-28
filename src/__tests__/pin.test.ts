@@ -7,8 +7,8 @@ test(`add 3 pins to the list`, () => {
         { id: 1, digital: true, label: 'pin 1', purpose: 'status' },
         { id: 2, digital: true, label: 'pin 2', purpose: 'led' },
     ]);
-    expect(p.list.length).toBe(3);
-    const k = pinKey(p.list[0]);
+    expect(p.size()).toBe(3);
+    const k = pinKey(p.item(0));
     p.remove(k);
-    expect(p.list.length).toBe(2);
+    expect(p.size()).toBe(2);
 });

@@ -33,7 +33,7 @@ test(`
     ]);
 
     // add 3 pins to device 1
-    const k1 = p.key(p.list[0]);
+    const k1 = p.key(p.item(0));
     let d1 = p.get(k1);
     expect(d1 !== undefined).toBe(true);
     if (d1 !== undefined) {
@@ -43,7 +43,7 @@ test(`
             { id: 1, digital: true, label: 'pin 1', purpose: 'status' },
             { id: 2, digital: true, label: 'pin 2', purpose: 'led' },
         ]);
-        expect(p1.list.length).toBe(3);
+        expect(p1.size()).toBe(3);
     }
 
     // save the device list to storage
@@ -54,12 +54,9 @@ test(`
     expect(q.load()).toBe(true);
 
     // verify list has 3 items
-    expect(q.list.length).toBe(3);
+    expect(q.size()).toBe(3);
 
     // verify device 1 has 3 pins
     d1 = q.get(k1);
-    expect(d1 !== undefined).toBe(true);
-    if (d1 !== undefined) {
-        expect(d1.pins.list.length).toBe(3);
-    }
+    expect(d1.pins.size()).toBe(3);
 });

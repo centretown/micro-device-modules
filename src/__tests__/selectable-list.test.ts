@@ -15,7 +15,9 @@ class Xc extends SelectableList<Xi> {
 }
 
 test(`
-    create a list and put 3 unique entries into it
+    create a list
+    put a null 
+    put 3 unique entries into it
     ensure the second one is
     remove the first entry
     `, () => {
@@ -25,17 +27,19 @@ test(`
         { x: 3, y: 1, z: 1, b: true, a: 'item 3' },
         { x: 2, y: 1, z: 1, b: true, a: 'item 2' },
     ]);
-    expect(p.list.length).toBe(3);
 
-    const k1 = p.key(p.list[0]);
-    const k2 = p.key(p.list[1]);
+    expect(p.size()).toBe(3);
+
+    const k1 = p.key(p.item(0));
+    const k2 = p.key(p.item(1));
 
     const x = p.get(k2);
     expect(x).toStrictEqual({ x: 3, y: 1, z: 1, b: true, a: 'item 3' });
 
     p.remove(k1);
-    expect(p.list.length).toBe(2);
-    expect(p.get(k1)).toBe(undefined);
+    expect(p.size()).toBe(2);
+
+    expect(p.get(k1)).toStrictEqual(p.nullItem());
 });
 
 test(`
@@ -49,14 +53,14 @@ test(`
         { x: 1, y: 1, z: 1, b: true, a: 'item 2' },
     ]);
 
-    const k3 = p.key(p.list[0]);
+    const k3 = p.key(p.item(0));
     const i3 = p.get(k3);
     expect(i3 !== undefined).toBe(true);
     if (i3 !== undefined) {
         i3.a = 'item 3';
         p.put(i3);
     }
-    expect(p.list.length).toBe(3);
+    expect(p.size()).toBe(3);
 
     const j3 = p.get(k3);
     expect(j3 !== undefined).toBe(true);
@@ -80,13 +84,13 @@ test(`
         { x: 3, y: 1, z: 1, b: true, a: 'item 2' },
         { x: 1, y: 1, z: 1, b: true, a: 'item 3' },
     ]);
-    const k1 = p.key(p.list[0]);
-    const k2 = p.key(p.list[1]);
-    const k3 = p.key(p.list[2]);
+    const k1 = p.key(p.item(0));
+    const k2 = p.key(p.item(1));
+    const k3 = p.key(p.item(2));
 
     p.toggleSelect(k2);
     p.toggleSelect(k3);
-    expect(p.selected.size).toBe(2);
+    expect(p.selected()).toBe(2);
     expect(p.isSelected(k2)).toBe(true);
     expect(p.isSelected(k3)).toBe(true);
 
@@ -101,9 +105,9 @@ test(`
     expect(l[1]).toStrictEqual(p.get(k3));
 
     p.removeSelected();
-    expect(p.list.length).toBe(1);
-    expect(p.selected.size).toBe(0);
-    expect(p.list[0]).toStrictEqual({ x: 2, y: 1, z: 1, b: true, a: 'item 1' });
+    expect(p.size()).toBe(1);
+    expect(p.selected()).toBe(0);
+    expect(p.item(0)).toStrictEqual({ x: 2, y: 1, z: 1, b: true, a: 'item 1' });
 });
 
 test(`
@@ -116,8 +120,8 @@ test(`
         { x: 3, y: 1, z: 1, b: true, a: 'item 3' },
         { x: 3, y: 1, z: 1, b: true, a: 'item 2' },
     ]);
-    expect(p.list.length).toBe(2);
-    const k2 = p.key(p.list[1]);
+    expect(p.size()).toBe(2);
+    const k2 = p.key(p.item(1));
     const i2 = p.get(k2);
     expect(i2 !== undefined).toBe(true);
     if (i2 !== undefined) {
@@ -137,10 +141,10 @@ test(`
         { x: 2, y: 1, z: 1, b: true, a: 'item 2' },
     ]);
 
-    p.sort();
-    expect(p.list.length).toBe(4);
-    expect(p.list[0].a).toBe('item 1');
-    expect(p.list[1].a).toBe('item 2');
-    expect(p.list[2].a).toBe('item 3');
-    expect(p.list[3].a).toBe('item 4');
+    const q = p.sort();
+    expect(q.length).toBe(4);
+    expect(q[0].a).toBe('item 1');
+    expect(q[1].a).toBe('item 2');
+    expect(q[2].a).toBe('item 3');
+    expect(q[3].a).toBe('item 4');
 });
