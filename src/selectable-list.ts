@@ -27,7 +27,7 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
 
     /**
      * @returns is equal to empty type
-     * @param item 
+     * @param item
      */
     nullItem(): T {
         return this._nullItem;

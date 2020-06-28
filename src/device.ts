@@ -16,8 +16,7 @@ export interface Device extends DeviceBase {
     pins: PinSelectable;
 }
 
-
-export interface IDeviceStorable extends IStoreableList<Device> { }
+export interface IDeviceStorable extends IStoreableList<Device> {}
 
 export class DeviceStoreable extends SelectableList<Device>
     implements IDeviceStorable {
@@ -38,10 +37,10 @@ export class DeviceStoreable extends SelectableList<Device>
                 ip: e.ip,
                 label: e.label,
                 model: e.model,
-                pins: e.pins.sort()
+                pins: e.pins.sort(),
             };
             saveList = [...saveList, item];
-        })
+        });
 
         try {
             localStorage.setItem(
@@ -72,12 +71,11 @@ export class DeviceStoreable extends SelectableList<Device>
                 ip: e.ip,
                 label: e.label,
                 model: e.model,
-                pins: new PinSelectable()
+                pins: new PinSelectable(),
             };
             d.pins.putList(e.pins);
             this.put(d);
-        })
+        });
         return true;
     }
-
 }
