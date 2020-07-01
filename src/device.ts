@@ -16,7 +16,7 @@ export interface Device extends DeviceBase {
     pins: PinSelectable;
 }
 
-export interface IDeviceStorable extends IStoreableList<Device> { }
+export interface IDeviceStorable extends IStoreableList<Device> {}
 
 export class DeviceStoreable extends SelectableList<Device>
     implements IDeviceStorable {
