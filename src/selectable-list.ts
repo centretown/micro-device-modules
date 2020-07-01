@@ -83,6 +83,10 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
         this._list = list;
     }
 
+    /**
+     * replace underlying list with replacement
+     * @param list replacement list
+     */
     replace(list: T[]): void {
         this._list = [...list];
     }
