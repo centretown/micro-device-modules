@@ -83,6 +83,10 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
         this._list = list;
     }
 
+    replace(list: T[]): void {
+        this._list = [...list];
+    }
+
     /**
      * @returns a copy if the internal list ordered by key
      */

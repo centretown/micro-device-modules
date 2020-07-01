@@ -148,3 +148,27 @@ test(`
     expect(q[2].a).toBe('item 3');
     expect(q[3].a).toBe('item 4');
 });
+
+test(`
+    create a list and put 4 entries unique items into it
+    sort the list and confirm correct order
+    `, () => {
+    const p = new Xc();
+    p.putList([
+        { x: 1, y: 1, z: 1, b: true, a: 'item 1' },
+        { x: 3, y: 2, z: 1, b: true, a: 'item 4' },
+        { x: 3, y: 1, z: 1, b: true, a: 'item 3' },
+        { x: 2, y: 1, z: 1, b: true, a: 'item 2' },
+    ]);
+
+    p.replace([
+        { x: 1, y: 1, z: 1, b: true, a: 'replace 1' },
+        { x: 3, y: 2, z: 1, b: true, a: 'replace 4' },
+        { x: 3, y: 1, z: 1, b: true, a: 'replace 3' },
+    ]);
+
+    expect(p.size()).toBe(3);
+    expect(p.item(0).a).toBe('replace 1');
+    expect(p.item(1).a).toBe('replace 4');
+    expect(p.item(2).a).toBe('replace 3');
+});
