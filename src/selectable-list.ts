@@ -74,14 +74,14 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
         let newList: T[] = [];
         list.forEach((item) => {
             const k = this.key(item);
-            newList = [...newList.filter((t) => this.key(t) !== k), item]
+            newList = [...newList.filter((t) => this.key(t) !== k), item];
         });
 
-        // filter out anything from the new parameter list 
+        // filter out anything from the new parameter list
         this._list = [
             ...this._list.filter((item) => {
                 const k = this.key(item);
-                newList.some((t) => this.key(t) === k)
+                newList.some((t) => this.key(t) === k);
             }),
             ...newList,
         ];
