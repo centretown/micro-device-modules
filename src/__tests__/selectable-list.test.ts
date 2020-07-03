@@ -16,10 +16,11 @@ class Xc extends SelectableList<Xi> {
 
 test(`
     create a list
-    put a null 
     put 3 unique entries into it
-    ensure the second one is
+    validate the second one
     remove the first entry
+    try get the deleted entry and
+        verify a null item is returned
     `, () => {
     const p = new Xc();
     p.putList([

@@ -53,10 +53,11 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      */
     put(item: T): void {
         if (item) {
-            const k = this.key(item);
-            // only remove if it's there
-            this.remove(k);
-            this._list = [...this._list, item];
+            const key = this.key(item);
+            this._list = [
+                ...this._list.filter((t) => this.key(t) !== key),
+                item,
+            ];
         }
     }
 
@@ -65,9 +66,25 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      * @param list of items to put
      */
     putList(list: T[]): void {
-        if (list) {
-            list.forEach((item) => this.put(item));
+        if (!list) {
+            return;
         }
+        // remove duplicate keys from parameter list
+        // keep last one found
+        let newList: T[] = [];
+        list.forEach((item) => {
+            const k = this.key(item);
+            newList = [...newList.filter((t) => this.key(t) !== k), item]
+        });
+
+        // filter out anything from the new parameter list 
+        this._list = [
+            ...this._list.filter((item) => {
+                const k = this.key(item);
+                newList.some((t) => this.key(t) === k)
+            }),
+            ...newList,
+        ];
     }
 
     /**
@@ -167,7 +184,7 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
     getSelected(): T[] {
         let selected: T[] = [];
         this._selected.forEach((item) => {
-            const found: T | undefined = this.get(item);
+            const found: T = this.get(item);
             if (found) {
                 selected = [...selected, found];
             }

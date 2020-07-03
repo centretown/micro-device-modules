@@ -60,3 +60,59 @@ test(`
     d1 = q.get(k1);
     expect(d1.pins.size()).toBe(3);
 });
+
+test(`
+    create a list and put 3 unique entries into it
+    select the 2nd and 3rd entry then 
+        verify each selected item
+    toggle selection for item 3 then verify not selected
+    create a list of selected items then verify list same
+      as the selected items
+    remove selected and verify
+    `, () => {
+    const p = new DeviceStoreable();
+    p.putList([
+        {
+            ip: '192.168.1.200',
+            model: 'nano',
+            label: '',
+            pins: new PinSelectable(),
+        },
+        {
+            ip: '192.168.1.218',
+            model: 'esp32',
+            label: '',
+            pins: new PinSelectable(),
+        },
+        {
+            ip: '192.168.1.217',
+            model: 'esp32',
+            label: '',
+            pins: new PinSelectable(),
+        },
+    ]);
+    const k1 = p.key(p.item(0));
+    const k2 = p.key(p.item(1));
+    const k3 = p.key(p.item(2));
+
+    expect(p.toggleSelect(k2)).toBe(true);
+    expect(p.toggleSelect(k3)).toBe(true);
+    expect(p.selected()).toBe(2);
+    expect(p.isSelected(k2)).toBe(true);
+    expect(p.isSelected(k3)).toBe(true);
+
+    expect(p.toggleSelect(k3)).toBe(false);
+    expect(p.isSelected(k3)).toBe(false);
+    expect(p.toggleSelect(k3)).toBe(true);
+    expect(p.isSelected(k3)).toBe(true);
+
+    const l = p.getSelected();
+    expect(l.length).toBe(2);
+    expect(l[0]).toStrictEqual(p.get(k2));
+    expect(l[1]).toStrictEqual(p.get(k3));
+
+    p.removeSelected();
+    expect(p.size()).toBe(1);
+    expect(p.selected()).toBe(0);
+    expect(p.item(0).ip).toStrictEqual('192.168.1.200');
+});
