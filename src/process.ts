@@ -2,7 +2,7 @@ import { IStoreableList } from './storeable-list';
 import { SelectableList } from './selectable-list';
 import { ActionSelectable, Action } from './action';
 
-export interface ProcessBase {
+interface ProcessBase {
     label: string;
     deviceKey: string;
     purpose: string;
