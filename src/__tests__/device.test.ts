@@ -13,21 +13,21 @@ test(`
     const p = new DeviceStoreable();
     p.putList([
         {
+            label: 'nano-200',
             ip: '192.168.1.200',
             model: 'nano',
-            label: '',
             pins: new PinSelectable(),
         },
         {
+            label: 'esp32-218',
             ip: '192.168.1.218',
             model: 'esp32',
-            label: '',
             pins: new PinSelectable(),
         },
         {
+            label: 'esp32-217',
             ip: '192.168.1.217',
             model: 'esp32',
-            label: '',
             pins: new PinSelectable(),
         },
     ]);
@@ -39,9 +39,9 @@ test(`
     if (d1 !== undefined) {
         const p1 = d1.pins;
         p1.putList([
-            { id: 0, digital: true, label: 'pin 0', purpose: 'reset' },
-            { id: 1, digital: true, label: 'pin 1', purpose: 'status' },
-            { id: 2, digital: true, label: 'pin 2', purpose: 'led' },
+            { id: 0, label: 'pin 0', purpose: 'reset' },
+            { id: 1, label: 'pin 1', purpose: 'status' },
+            { id: 2, label: 'pin 2', purpose: 'led' },
         ]);
         expect(p1.size()).toBe(3);
     }
@@ -73,21 +73,21 @@ test(`
     const p = new DeviceStoreable();
     p.putList([
         {
+            label: 'nano-200',
             ip: '192.168.1.200',
             model: 'nano',
-            label: '',
             pins: new PinSelectable(),
         },
         {
+            label: 'esp32-218',
             ip: '192.168.1.218',
             model: 'esp32',
-            label: '',
             pins: new PinSelectable(),
         },
         {
+            label: 'esp32-217',
             ip: '192.168.1.217',
             model: 'esp32',
-            label: '',
             pins: new PinSelectable(),
         },
     ]);
