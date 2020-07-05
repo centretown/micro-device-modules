@@ -1,4 +1,4 @@
-import { Action } from "./action"
+import { Action } from './action';
 export const PIN_ACTION = 'PIN';
 export const DIGITAL_HIGH = 1;
 export const DIGITAL_LOW = 0;
@@ -10,7 +10,6 @@ export interface PinType {
     signal: 'analog' | 'digital';
     mode: 'output' | 'input';
     value: number;
-
 }
 
 export function pinAction(sequence: number, action: PinType): Action {

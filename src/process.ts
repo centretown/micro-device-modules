@@ -1,6 +1,6 @@
-import { IStoreableList } from "./storeable-list"
-import { SelectableList } from "./selectable-list";
-import { ActionSelectable, Action } from "./action";
+import { IStoreableList } from './storeable-list';
+import { SelectableList } from './selectable-list';
+import { ActionSelectable, Action } from './action';
 
 export interface ProcessBase {
     label: string;
@@ -18,14 +18,13 @@ export interface Process extends ProcessBase {
     loop: ActionSelectable;
 }
 
-export interface IProcessStoreable extends IStoreableList<Process> { };
+export interface IProcessStoreable extends IStoreableList<Process> {}
 
 export class ProcessStoreable extends SelectableList<Process>
     implements IProcessStoreable {
-
     LOCAL_STORAGE_KEY = 'micro.process';
     key(proc: Process) {
-        return proc.deviceKey + "." + proc.label;
+        return proc.deviceKey + '.' + proc.label;
     }
     /**
      * save the process list to local storage
@@ -40,8 +39,8 @@ export class ProcessStoreable extends SelectableList<Process>
                 deviceKey: e.deviceKey,
                 purpose: e.purpose,
                 setup: e.setup.sort(),
-                loop: e.loop.sort()
-            }
+                loop: e.loop.sort(),
+            };
             saveList = [...saveList, item];
         });
 
@@ -54,7 +53,7 @@ export class ProcessStoreable extends SelectableList<Process>
             // todo: better than this
             throw new Error('problem saving to storage: ' + error);
         }
-    };
+    }
 
     /**
      * load process list from storage
@@ -83,5 +82,5 @@ export class ProcessStoreable extends SelectableList<Process>
             this.put(d);
         });
         return true;
-    };
+    }
 }

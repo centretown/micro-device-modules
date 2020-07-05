@@ -1,6 +1,12 @@
 import { ProcessStoreable } from '../process';
 import { ActionSelectable, Action } from '../action';
-import { pinMode, pinAction, DIGITAL_HIGH, delayAction, DIGITAL_LOW } from '../command';
+import {
+    pinMode,
+    pinAction,
+    DIGITAL_HIGH,
+    delayAction,
+    DIGITAL_LOW,
+} from '../command';
 
 test(`create a list of 3 processes
       get the first process
@@ -67,17 +73,17 @@ test(`create a list of 3 processes
         expect(!d1.setup).toBe(false);
         d1.setup.put(modeAction);
         expect(d1.setup.size()).toBe(1);
-        expect(d1.setup.get("0")).toStrictEqual(modeAction);
+        expect(d1.setup.get('0')).toStrictEqual(modeAction);
 
         seq = 0;
         expect(!d1.loop).toBe(false);
         seq = 0;
         d1.loop.putList([hiAction, hiDelay, loAction, loDelay]);
         expect(d1.loop.size()).toBe(4);
-        expect(d1.loop.get("0")).toStrictEqual(hiAction);
-        expect(d1.loop.get("1")).toStrictEqual(hiDelay);
-        expect(d1.loop.get("2")).toStrictEqual(loAction);
-        expect(d1.loop.get("3")).toStrictEqual(loDelay);
+        expect(d1.loop.get('0')).toStrictEqual(hiAction);
+        expect(d1.loop.get('1')).toStrictEqual(hiDelay);
+        expect(d1.loop.get('2')).toStrictEqual(loAction);
+        expect(d1.loop.get('3')).toStrictEqual(loDelay);
     }
 
     // save the process list to storage
@@ -93,11 +99,11 @@ test(`create a list of 3 processes
     // verify process has 1 setup action and 4 loop actions
     d1 = q.get(k1);
     expect(d1.setup.size()).toBe(1);
-    expect(d1.setup.get("0")).toStrictEqual(modeAction);
+    expect(d1.setup.get('0')).toStrictEqual(modeAction);
 
     expect(d1.loop.size()).toBe(4);
-    expect(d1.loop.get("0")).toStrictEqual(hiAction);
-    expect(d1.loop.get("1")).toStrictEqual(hiDelay);
-    expect(d1.loop.get("2")).toStrictEqual(loAction);
-    expect(d1.loop.get("3")).toStrictEqual(loDelay);
+    expect(d1.loop.get('0')).toStrictEqual(hiAction);
+    expect(d1.loop.get('1')).toStrictEqual(hiDelay);
+    expect(d1.loop.get('2')).toStrictEqual(loAction);
+    expect(d1.loop.get('3')).toStrictEqual(loDelay);
 });

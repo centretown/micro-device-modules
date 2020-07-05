@@ -1,7 +1,4 @@
-import {
-    ActionSelectable,
-    Action,
-} from '../action';
+import { ActionSelectable, Action } from '../action';
 
 import {
     delayAction,
@@ -9,7 +6,7 @@ import {
     pinMode,
     DIGITAL_HIGH,
     DIGITAL_LOW,
-} from '../command'
+} from '../command';
 
 test(`create 2 action lists "setup" and "loop"
         verify size and each entry`, () => {
@@ -24,7 +21,7 @@ test(`create 2 action lists "setup" and "loop"
     });
     setup.put(modeAction);
     expect(setup.size()).toBe(1);
-    expect(setup.get("0")).toStrictEqual(modeAction);
+    expect(setup.get('0')).toStrictEqual(modeAction);
 
     // loop
     const loop = new ActionSelectable();
@@ -47,8 +44,8 @@ test(`create 2 action lists "setup" and "loop"
 
     loop.putList([hiAction, hiDelay, loAction, loDelay]);
     expect(loop.size()).toBe(4);
-    expect(loop.get("0")).toStrictEqual(hiAction);
-    expect(loop.get("1")).toStrictEqual(hiDelay);
-    expect(loop.get("2")).toStrictEqual(loAction);
-    expect(loop.get("3")).toStrictEqual(loDelay);
+    expect(loop.get('0')).toStrictEqual(hiAction);
+    expect(loop.get('1')).toStrictEqual(hiDelay);
+    expect(loop.get('2')).toStrictEqual(loAction);
+    expect(loop.get('3')).toStrictEqual(loDelay);
 });
