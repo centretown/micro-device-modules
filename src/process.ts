@@ -1,4 +1,4 @@
-import { IStoreableList } from './storeable-list';
+import { IStoreableList, StoreableList } from './storeable-list';
 import { SelectableList } from './selectable-list';
 import { ActionSelectable, Action } from './action';
 
@@ -20,7 +20,7 @@ export interface Process extends ProcessBase {
 
 export interface IProcessStoreable extends IStoreableList<Process> {}
 
-export class ProcessStoreable extends SelectableList<Process>
+export class ProcessStoreable extends StoreableList<Process>
     implements IProcessStoreable {
     LOCAL_STORAGE_KEY = 'micro.process';
     key(proc: Process) {

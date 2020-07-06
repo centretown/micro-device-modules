@@ -1,5 +1,5 @@
 import { Pin, PinSelectable, IPinSelectable } from './pin';
-import { IStoreableList } from './storeable-list';
+import { IStoreableList, StoreableList } from './storeable-list';
 import { SelectableList } from './selectable-list';
 
 interface DeviceBase {
@@ -18,7 +18,7 @@ export interface Device extends DeviceBase {
 
 export interface IDeviceStorable extends IStoreableList<Device> {}
 
-export class DeviceStoreable extends SelectableList<Device>
+export class DeviceStoreable extends StoreableList<Device>
     implements IDeviceStorable {
     LOCAL_STORAGE_KEY = 'micro.devices';
     key(item: Device): string {
