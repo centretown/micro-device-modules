@@ -106,4 +106,11 @@ test(`create a list of 3 processes
     expect(d1.loop.get('1')).toStrictEqual(hiDelay);
     expect(d1.loop.get('2')).toStrictEqual(loAction);
     expect(d1.loop.get('3')).toStrictEqual(loDelay);
+
+    const item = q.newItem();
+    expect(item.purpose).toStrictEqual('');
+    expect(item.label).toStrictEqual('');
+    expect(item.deviceKey).toStrictEqual('');
+    expect(item.loop === undefined).toBe(false);
+    expect(item.setup === undefined).toBe(false);
 });

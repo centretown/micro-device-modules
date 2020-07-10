@@ -48,4 +48,9 @@ test(`create 2 action lists "setup" and "loop"
     expect(loop.get('1')).toStrictEqual(hiDelay);
     expect(loop.get('2')).toStrictEqual(loAction);
     expect(loop.get('3')).toStrictEqual(loDelay);
+
+    const item = loop.newItem();
+    expect(item.sequence).toStrictEqual(0);
+    expect(item.type).toStrictEqual('');
+    expect(item.action).toStrictEqual('');
 });

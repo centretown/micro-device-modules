@@ -16,7 +16,7 @@ export interface Device extends DeviceBase {
     pins: PinSelectable;
 }
 
-export interface IDeviceStorable extends IStoreableList<Device> {}
+export interface IDeviceStorable extends IStoreableList<Device> { }
 
 export class DeviceStoreable extends StoreableList<Device>
     implements IDeviceStorable {
@@ -24,6 +24,15 @@ export class DeviceStoreable extends StoreableList<Device>
     key(item: Device): string {
         return item.label;
     }
+
+    newItem(): Device {
+        return {
+            model: '',
+            label: '',
+            ip: '',
+            pins: new PinSelectable(),
+        };
+    };
 
     /**
      * save the list to local storage

@@ -115,4 +115,10 @@ test(`
     expect(p.size()).toBe(1);
     expect(p.selected()).toBe(0);
     expect(p.item(0).ip).toStrictEqual('192.168.1.200');
+
+    const item = p.newItem();
+    expect(item.model).toStrictEqual('');
+    expect(item.label).toStrictEqual('');
+    expect(item.ip).toStrictEqual('');
+    expect(item.pins === undefined).toBe(false);
 });

@@ -26,6 +26,18 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
     }
 
     /**
+     * subclass must provide a unique key for each item
+     * @param item
+     */
+    abstract key(item: T): string;
+
+    /**
+     * subclass must provide a unique key for each item
+     * @param item
+     */
+    abstract newItem(): T;
+
+    /**
      * @returns is equal to empty type
      * @param item
      */
@@ -39,12 +51,6 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
     size(): number {
         return this._list.length;
     }
-
-    /**
-     * subclass must provide a unique key for each item
-     * @param item
-     */
-    abstract key(item: T): string;
 
     /**
      * put an item in the list, remove it its already there

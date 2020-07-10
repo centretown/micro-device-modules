@@ -6,11 +6,18 @@ export interface Pin {
     purpose: string;
 }
 
-export interface IPinSelectable extends ISelectableList<Pin> {}
+export interface IPinSelectable extends ISelectableList<Pin> { }
 
 export class PinSelectable extends SelectableList<Pin>
     implements IPinSelectable {
     key(p: Pin): string {
         return p.id.toString();
+    }
+    newItem(): Pin {
+        return {
+            id: 0,
+            label: '',
+            purpose: '',
+        };
     }
 }

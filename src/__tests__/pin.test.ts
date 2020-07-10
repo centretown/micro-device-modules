@@ -11,4 +11,9 @@ test(`add 3 pins to the list`, () => {
     const k = p.key(p.item(0));
     p.remove(k);
     expect(p.size()).toBe(2);
+
+    const item = p.newItem();
+    expect(item.id).toStrictEqual(0);
+    expect(item.label).toStrictEqual('');
+    expect(item.purpose).toStrictEqual('');
 });
