@@ -6,7 +6,7 @@ export interface Pin {
     purpose: string;
 }
 
-export interface IPinSelectable extends ISelectableList<Pin> { }
+export interface IPinSelectable extends ISelectableList<Pin> {}
 
 export class PinSelectable extends SelectableList<Pin>
     implements IPinSelectable {

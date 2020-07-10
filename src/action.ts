@@ -6,7 +6,7 @@ export interface Action {
     action: any;
 }
 
-export interface IActionSelectable extends ISelectableList<Action> { }
+export interface IActionSelectable extends ISelectableList<Action> {}
 
 export class ActionSelectable extends SelectableList<Action>
     implements IActionSelectable {
