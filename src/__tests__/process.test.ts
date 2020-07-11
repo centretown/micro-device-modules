@@ -1,11 +1,22 @@
 import { ProcessStoreable } from '../process';
-import { ActionSelectable, Action } from '../action';
 import {
-    pinMode,
+    ActionSelectable,
+    Action,
     pinAction,
-    DIGITAL_HIGH,
     delayAction,
+    modeAction,
+} from '../action';
+import {
+    DIGITAL_HIGH,
     DIGITAL_LOW,
+    PIN_COMMAND,
+    pinCommand,
+    DELAY_COMMAND,
+    delayCommand,
+    modeCommand,
+    DIGITAL_SIGNAL,
+    OUTPUT_MODE,
+    MODE_COMMAND,
 } from '../command';
 
 test(`create a list of 3 processes
@@ -43,41 +54,37 @@ test(`create a list of 3 processes
     ]);
 
     let seq = 0;
+    const hiAction = pinAction(
+        seq++,
+        2,
+        DIGITAL_SIGNAL,
+        OUTPUT_MODE,
+        DIGITAL_HIGH,
+    );
+    const hiDelay = delayAction(seq++, 200);
+    const loAction = pinAction(
+        seq++,
+        2,
+        DIGITAL_SIGNAL,
+        OUTPUT_MODE,
+        DIGITAL_LOW,
+    );
+    const loDelay = delayAction(seq++, 500);
 
-    // set the mode
-    const modeAction: Action = pinMode(seq++, {
-        id: 2,
-        signal: 'digital',
-        mode: 'output',
-    });
     seq = 0;
-    const hiAction: Action = pinAction(seq++, {
-        id: 2,
-        signal: 'digital',
-        mode: 'output',
-        value: DIGITAL_HIGH,
-    });
-    const hiDelay: Action = delayAction(seq++, { duration: 500 });
-    const loAction: Action = pinAction(seq++, {
-        id: 2,
-        signal: 'digital',
-        mode: 'output',
-        value: DIGITAL_LOW,
-    });
-    const loDelay: Action = delayAction(seq++, { duration: 500 });
+    const modeOutput = modeAction(seq++, 2, DIGITAL_SIGNAL, OUTPUT_MODE);
 
     const k1 = p.key(p.item(0));
     let d1 = p.get(k1);
+
     expect(d1 !== undefined).toBe(true);
     if (d1 !== undefined) {
         expect(!d1.setup).toBe(false);
-        d1.setup.put(modeAction);
+        d1.setup.put(modeOutput);
         expect(d1.setup.size()).toBe(1);
-        expect(d1.setup.get('0')).toStrictEqual(modeAction);
+        expect(d1.setup.get('0')).toStrictEqual(modeOutput);
 
-        seq = 0;
         expect(!d1.loop).toBe(false);
-        seq = 0;
         d1.loop.putList([hiAction, hiDelay, loAction, loDelay]);
         expect(d1.loop.size()).toBe(4);
         expect(d1.loop.get('0')).toStrictEqual(hiAction);
@@ -99,7 +106,7 @@ test(`create a list of 3 processes
     // verify process has 1 setup action and 4 loop actions
     d1 = q.get(k1);
     expect(d1.setup.size()).toBe(1);
-    expect(d1.setup.get('0')).toStrictEqual(modeAction);
+    expect(d1.setup.get('0')).toStrictEqual(modeOutput);
 
     expect(d1.loop.size()).toBe(4);
     expect(d1.loop.get('0')).toStrictEqual(hiAction);
