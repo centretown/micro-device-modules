@@ -137,18 +137,17 @@ test(`create a list of 3 processes
 
     expect(pitem.label).toBe('Process 2');
     expect(pitem.deviceKey).toBe('esp32-210');
-    expect(pitem.purpose).toBe("Blink");
+    expect(pitem.purpose).toBe('Blink');
     const pkey = p.key(pitem);
 
-    pitem.purpose = "Blink Blink";
+    pitem.purpose = 'Blink Blink';
 
     p.put(pitem);
     pitem = p.get(pkey);
-    expect(pitem.purpose).toBe("Blink Blink");
+    expect(pitem.purpose).toBe('Blink Blink');
     p.save();
 
     q.load();
     pitem = q.get(pkey);
-    expect(pitem.purpose).toBe("Blink Blink");
-
+    expect(pitem.purpose).toBe('Blink Blink');
 });

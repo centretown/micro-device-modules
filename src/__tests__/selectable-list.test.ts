@@ -18,9 +18,9 @@ class Xc extends SelectableList<Xi> {
             x: 0,
             y: 0,
             z: 0,
-            a: "",
-            b: false
-        }
+            a: '',
+            b: false,
+        };
     }
 }
 
@@ -182,5 +182,4 @@ test(`
     expect(p.item(0).a).toBe('replace 1');
     expect(p.item(1).a).toBe('replace 4');
     expect(p.item(2).a).toBe('replace 3');
-
 });

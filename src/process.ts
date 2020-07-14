@@ -18,7 +18,7 @@ export interface Process extends ProcessBase {
     loop: ActionSelectable;
 }
 
-export interface IProcessStoreable extends IStoreableList<Process> { }
+export interface IProcessStoreable extends IStoreableList<Process> {}
 
 export class ProcessStoreable extends StoreableList<Process>
     implements IProcessStoreable {
