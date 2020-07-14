@@ -10,7 +10,17 @@ interface Xi {
 
 class Xc extends SelectableList<Xi> {
     key(item: Xi): string {
-        return item.x.toString() + item.y.toString() + item.z.toString();
+        return item.x.toString();
+    }
+
+    newItem(): Xi {
+        return {
+            x: 0,
+            y: 0,
+            z: 0,
+            a: "",
+            b: false
+        }
     }
 }
 
@@ -40,7 +50,7 @@ test(`
     p.remove(k1);
     expect(p.size()).toBe(2);
 
-    expect(p.get(k1)).toStrictEqual(p.nullItem());
+    expect(p.get(k1)).toStrictEqual(p.newItem());
 });
 
 test(`
@@ -136,10 +146,10 @@ test(`
     `, () => {
     const p = new Xc();
     p.putList([
-        { x: 1, y: 1, z: 1, b: true, a: 'item 1' },
-        { x: 3, y: 2, z: 1, b: true, a: 'item 4' },
+        { x: 2, y: 2, z: 1, b: true, a: 'item 2' },
         { x: 3, y: 1, z: 1, b: true, a: 'item 3' },
-        { x: 2, y: 1, z: 1, b: true, a: 'item 2' },
+        { x: 1, y: 1, z: 1, b: true, a: 'item 1' },
+        { x: 4, y: 1, z: 1, b: true, a: 'item 4' },
     ]);
 
     const q = p.sort();
@@ -157,14 +167,14 @@ test(`
     const p = new Xc();
     p.putList([
         { x: 1, y: 1, z: 1, b: true, a: 'item 1' },
-        { x: 3, y: 2, z: 1, b: true, a: 'item 4' },
+        { x: 2, y: 2, z: 1, b: true, a: 'item 4' },
         { x: 3, y: 1, z: 1, b: true, a: 'item 3' },
-        { x: 2, y: 1, z: 1, b: true, a: 'item 2' },
+        { x: 4, y: 1, z: 1, b: true, a: 'item 2' },
     ]);
 
     p.replace([
         { x: 1, y: 1, z: 1, b: true, a: 'replace 1' },
-        { x: 3, y: 2, z: 1, b: true, a: 'replace 4' },
+        { x: 2, y: 2, z: 1, b: true, a: 'replace 4' },
         { x: 3, y: 1, z: 1, b: true, a: 'replace 3' },
     ]);
 
@@ -172,4 +182,5 @@ test(`
     expect(p.item(0).a).toBe('replace 1');
     expect(p.item(1).a).toBe('replace 4');
     expect(p.item(2).a).toBe('replace 3');
+
 });

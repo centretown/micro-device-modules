@@ -18,13 +18,13 @@ export interface Process extends ProcessBase {
     loop: ActionSelectable;
 }
 
-export interface IProcessStoreable extends IStoreableList<Process> {}
+export interface IProcessStoreable extends IStoreableList<Process> { }
 
 export class ProcessStoreable extends StoreableList<Process>
     implements IProcessStoreable {
     LOCAL_STORAGE_KEY = 'micro.process';
     key(proc: Process) {
-        return proc.deviceKey + '.' + proc.label;
+        return proc.label;
     }
     newItem(): Process {
         return {

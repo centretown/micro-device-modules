@@ -23,9 +23,15 @@ test(`create a list of 3 processes
       get the first process
       add an action to setup
       add 4 actions to loop
+      toggle item and select
       save the list to storage
       load the list from storage
       verify list matches original
+      toggle 2 items  
+      select the 2nd one
+      modify item including sub-lists
+      save to storage
+      load from storage and verify data
       `, () => {
     // create a device list {p} with 3 items
     const p = new ProcessStoreable();
@@ -120,4 +126,29 @@ test(`create a list of 3 processes
     expect(item.deviceKey).toStrictEqual('');
     expect(item.loop === undefined).toBe(false);
     expect(item.setup === undefined).toBe(false);
+
+    p.toggleSelect(p.key(p.item(0)));
+    p.toggleSelect(p.key(p.item(1)));
+    const psel = p.getSelected();
+    expect(psel.length).toBe(2);
+    let pitem = psel[1];
+
+    expect(pitem === undefined).toBe(false);
+
+    expect(pitem.label).toBe('Process 2');
+    expect(pitem.deviceKey).toBe('esp32-210');
+    expect(pitem.purpose).toBe("Blink");
+    const pkey = p.key(pitem);
+
+    pitem.purpose = "Blink Blink";
+
+    p.put(pitem);
+    pitem = p.get(pkey);
+    expect(pitem.purpose).toBe("Blink Blink");
+    p.save();
+
+    q.load();
+    pitem = q.get(pkey);
+    expect(pitem.purpose).toBe("Blink Blink");
+
 });

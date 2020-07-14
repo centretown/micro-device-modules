@@ -11,18 +11,15 @@ export interface ISelectableList<T> {
     getSelected: () => T[];
     selected: () => number;
     size: () => number;
-    nullItem: (item: T) => T;
 }
 
 export abstract class SelectableList<T> implements ISelectableList<T> {
     private _list: T[];
     private _selected: Set<string>;
-    private _nullItem: T;
 
     constructor() {
         this._list = [];
         this._selected = new Set<string>();
-        this._nullItem = {} as T;
     }
 
     /**
@@ -36,14 +33,6 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      * @param item
      */
     abstract newItem(): T;
-
-    /**
-     * @returns is equal to empty type
-     * @param item
-     */
-    nullItem(): T {
-        return this._nullItem;
-    }
 
     /**
      * @returns list length
@@ -134,7 +123,7 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      */
     get(key: string): T {
         const item = this._list.find((t) => this.key(t) === key);
-        return item ? item : this._nullItem;
+        return item ? item : this.newItem();
     }
 
     /**
@@ -174,7 +163,7 @@ export abstract class SelectableList<T> implements ISelectableList<T> {
      */
     item(index: number): T {
         if (index >= 0 && index < this._list.length) return this._list[index];
-        return this._nullItem;
+        return this.newItem();
     }
 
     /**
