@@ -18,7 +18,7 @@ export interface Process extends ProcessBase {
     loop: ActionSelectable;
 }
 
-export interface IProcessStoreable extends IStoreableList<Process> { }
+export interface IProcessStoreable extends IStoreableList<Process> {}
 
 export interface ProcessResponse extends Response {
     parsedBody?: string;
@@ -40,7 +40,6 @@ export class ProcessStoreable extends StoreableList<Process>
         };
     }
 
-
     /**
      * flatten replaces class instances with arrays
      */
@@ -53,7 +52,7 @@ export class ProcessStoreable extends StoreableList<Process>
             loop: e.loop.sort(),
         };
         return flat;
-    };
+    }
 
     /**
      * unflatten replaces arrays with class instances
@@ -82,7 +81,9 @@ export class ProcessStoreable extends StoreableList<Process>
 
         try {
             localStorage.setItem(
-                this.LOCAL_STORAGE_KEY, JSON.stringify(flatList));
+                this.LOCAL_STORAGE_KEY,
+                JSON.stringify(flatList),
+            );
         } catch (error) {
             throw new Error('problem saving to storage: ' + error);
         }

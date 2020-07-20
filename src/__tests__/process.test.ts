@@ -1,8 +1,18 @@
 import { ProcessStoreable } from '../process';
 
-import { pinAction, delayAction, modeAction, ActionSelectable } from "../action";
-import { DIGITAL_SIGNAL, OUTPUT_MODE, DIGITAL_HIGH, DIGITAL_LOW } from "../command";
-import { Process } from "../process";
+import {
+    pinAction,
+    delayAction,
+    modeAction,
+    ActionSelectable,
+} from '../action';
+import {
+    DIGITAL_SIGNAL,
+    OUTPUT_MODE,
+    DIGITAL_HIGH,
+    DIGITAL_LOW,
+} from '../command';
+import { Process } from '../process';
 
 export const inputList: Process[] = [
     {
@@ -56,7 +66,7 @@ const setupProcess = (): ProcessStoreable => {
     p.item(0).setup.putList([modeOutput]);
     p.item(0).loop.putList([hiAction, hiDelay, loAction, loDelay]);
     return p;
-}
+};
 
 test(`create a list of 3 processes
       get the first process
@@ -154,7 +164,6 @@ test(`create a list of 3 processes
     pitem = q.get(pkey);
     expect(pitem.purpose).toBe('Blink Blink');
 });
-
 
 test(`
     create a device list {p} with 3 items
