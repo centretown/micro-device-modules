@@ -1,6 +1,6 @@
 import { IStoreableList, StoreableList } from './storeable-list';
-import { SelectableList } from './selectable-list';
 import { ActionSelectable, Action } from './action';
+import { Device } from './device';
 
 interface ProcessBase {
     label: string;
@@ -8,7 +8,7 @@ interface ProcessBase {
     purpose: string;
 }
 
-interface ProcessSave extends ProcessBase {
+interface ProcessFlat extends ProcessBase {
     setup: Action[];
     loop: Action[];
 }
@@ -18,7 +18,11 @@ export interface Process extends ProcessBase {
     loop: ActionSelectable;
 }
 
-export interface IProcessStoreable extends IStoreableList<Process> {}
+export interface IProcessStoreable extends IStoreableList<Process> { }
+
+export interface ProcessResponse extends Response {
+    parsedBody?: string;
+}
 
 export class ProcessStoreable extends StoreableList<Process>
     implements IProcessStoreable {
@@ -28,38 +32,58 @@ export class ProcessStoreable extends StoreableList<Process>
     }
     newItem(): Process {
         return {
-            deviceKey: '',
             label: '',
+            deviceKey: '',
             purpose: '',
             setup: new ActionSelectable(),
             loop: new ActionSelectable(),
         };
     }
+
+
+    /**
+     * flatten replaces class instances with arrays
+     */
+    flatten(e: Process): ProcessFlat {
+        const flat: ProcessFlat = {
+            label: e.label,
+            deviceKey: e.deviceKey,
+            purpose: e.purpose,
+            setup: e.setup.sort(),
+            loop: e.loop.sort(),
+        };
+        return flat;
+    };
+
+    /**
+     * unflatten replaces arrays with class instances
+     */
+    unflatten(flat: ProcessFlat): Process {
+        const process: Process = {
+            label: flat.label,
+            deviceKey: flat.deviceKey,
+            purpose: flat.purpose,
+            setup: new ActionSelectable(),
+            loop: new ActionSelectable(),
+        };
+        process.setup.putList(flat.setup);
+        process.loop.putList(flat.loop);
+        return process;
+    }
+
     /**
      * save the process list to local storage
      */
     save(): void {
-        const list = this.sort();
-        let saveList: ProcessSave[] = [];
-
-        list.forEach((e) => {
-            const item: ProcessSave = {
-                label: e.label,
-                deviceKey: e.deviceKey,
-                purpose: e.purpose,
-                setup: e.setup.sort(),
-                loop: e.loop.sort(),
-            };
-            saveList = [...saveList, item];
+        let flatList: ProcessFlat[] = [];
+        this.sort().forEach((e) => {
+            flatList = [...flatList, this.flatten(e)];
         });
 
         try {
             localStorage.setItem(
-                this.LOCAL_STORAGE_KEY,
-                JSON.stringify(saveList),
-            );
+                this.LOCAL_STORAGE_KEY, JSON.stringify(flatList));
         } catch (error) {
-            // todo: better than this
             throw new Error('problem saving to storage: ' + error);
         }
     }
@@ -70,26 +94,28 @@ export class ProcessStoreable extends StoreableList<Process>
      */
     load(): boolean {
         const storage = localStorage.getItem(this.LOCAL_STORAGE_KEY);
-        if (!storage || storage === '') {
+        if (!storage) {
             return false;
         }
-        const list: ProcessSave[] = JSON.parse(storage);
-        if (list.length === 0) {
-            return false;
-        }
-
+        const list: ProcessFlat[] = JSON.parse(storage);
         list.forEach((e) => {
-            const d: Process = {
-                label: e.label,
-                deviceKey: e.deviceKey,
-                purpose: e.purpose,
-                setup: new ActionSelectable(),
-                loop: new ActionSelectable(),
-            };
-            d.setup.putList(e.setup);
-            d.loop.putList(e.loop);
-            this.put(d);
+            this.put(this.unflatten(e));
         });
         return true;
+    }
+
+    async send(process: Process, device: Device): Promise<ProcessResponse> {
+        const body = JSON.stringify(this.flatten(process));
+        const response: ProcessResponse = await fetch(device.ip, {
+            method: 'POST', // always
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': body.length.toString(),
+            },
+            body: `${body}`,
+        });
+
+        response.parsedBody = await response.json();
+        return response;
     }
 }
