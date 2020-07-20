@@ -1,6 +1,6 @@
 {
   "name": "micro-device-modules",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "simple device manager library",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
